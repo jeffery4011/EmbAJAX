@@ -133,14 +133,19 @@ bool EmbAJAXElement::changed(uint16_t since) {
     return (revision > since);
 }
 
-void EmbAJAXElement::printTextInput(uint SIZE, const char* _value) const {
+void EmbAJAXElement::printTextInput(uint SIZE, const char* _value, const char* params) const {
     _driver->printContent("<input id=");
     _driver->printQuoted(_id);
     _driver->printContent(" type=\"text\" maxLength=\"");
     _driver->printContent(itoa(SIZE-1, itoa_buf, 10));
     _driver->printContent("\" size=\"");
     _driver->printContent(itoa(min(max(abs(SIZE-1), 10),40), itoa_buf, 10));  // Arbitray limit for rendered width of text fields: 10..40 chars
-    _driver->printContent("\" value=");
+    _driver->printContent("\"");
+    if (params) {
+        _driver->printContent(" ");
+        _driver->printContent(params);
+    }
+    _driver->printContent(" value=");
     _driver->printQuoted(_value);
     // Using onChange to update is too awkward. Using plain onInput would generate too may requests (and often result in "eaten" characters). Instead,
     // as a compromise, we arrange for an update one second after the last key was pressed.

@@ -285,7 +285,7 @@ friend class EmbAJAXBase;
     void setChanged();
     bool changed(uint16_t since);
     /** Filthy trick to keep (template) implementation out of the header. See EmbAJAXTextInput::print() */
-    void printTextInput(uint size, const char* value) const;
+    void printTextInput(uint size, const char* value, const char* params) const;
 private:
     byte _flags;
     uint16_t revision;
@@ -316,18 +316,31 @@ private:
 
 /** @brief A text input field.
  *
- *  A text input field. The template parameter specifies the size (i.e. maximum number of chars)
- *  of the input field.
+ *  A text input field.
+ *  @param SIZE Specifies the size (i.e. maximum number of chars) of the input field.
+ *  @param PLACEHOLDER Optional: Placeholder to be displayed while the input is empty (e.g. "Enter your name, here")
+ *  @param PATTERN Optional Regular expression of acceptable input. The client (assuming it supports the feature) will check
+ *                 the input for conformance to this pattern, and highlight errors, _but_ it does _not_ ensure that
+ *                 only valid patterns are sent to the server. The value returned by value() may of may not conform
+ *                 to the pattern.
+ *
+ *  For an example of using the PLACEHOLDER and PATTERN parameters, see the EmbAJAXIPv4Input template alias.
  *
  *  @note To limit the rate, and avoid conflicting update-conditions, when typing into the text field in the client,
  *        changes are sent to the server one second after the last key was pressed. This worked for me, best. */
 template<size_t SIZE> class EmbAJAXTextInput : public EmbAJAXElement {
 public:
-    EmbAJAXTextInput(const char* id) : EmbAJAXElement(id) {
+    /** constructor.
+     *  @param id Id of this element
+     *  @param params Additional attributes for the \<input type="text">-tag. As an example, you can set this to
+     *                "placeholder=\"192.168.1.1\" pattern=\"\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\"" for a field
+     *                designed to hold an IPv$ address. */
+    EmbAJAXTextInput(const char* id, const char* params = 0) : EmbAJAXElement(id) {
         _value[0] = '\0';
+        _params = params;
     }
     void print() const override {
-        EmbAJAXElement::printTextInput(SIZE, _value);
+        EmbAJAXElement::printTextInput(SIZE, _value, _params);
     }
     const char* value(uint8_t which = EmbAJAXBase::Value) const override {
         if (which == EmbAJAXBase::Value) return _value;
@@ -347,6 +360,7 @@ public:
     }
 private:
     char _value[SIZE];
+    const char* _params;
 };
 
 /** @brief An HTML span element with content that can be updated from the server (not the client) */
