@@ -183,6 +183,7 @@ void loop() {
     analogWrite(B_out1, fix_value);
     digitalWrite(B_out2,0);
   } else { //user define mode
+  // the class EmbAJAXTextInput do not have intValue function, therefore tex1_1.intValue() and text_2.intValue() will return error
     if (text_1.intValue()>0) {
     digitalWrite(A_out1, 0);
     analogWrite(A_out2,abs(text_1.intValue()));
