@@ -1,4 +1,4 @@
-#include <EmbAJAX.h>
+#include <EmbAJAX_text_improved.h>
 #include <EmbAJAXValidatingTextInput.h> // Fancier text input in a separate header file
 #include <EmbAJAXScriptedSpan.h>
 
@@ -134,8 +134,10 @@ void updateUI() {
   optionselect_d.setValue(radio_opts[optionselect.selectedOption()]);
   text_d1.setEnabled(radio.selectedOption() == 4);
   text_d2.setEnabled(radio.selectedOption() == 4);
-  text_d1.setValue(itoa(text_1.intValue(), motor_d_buf1, 10));
-  text_d2.setValue(itoa(text_2.intValue(), motor_d_buf2, 10));
+  //text_d1.setValue(itoa(text_1.intValue(), motor_d_buf1, 10));//change the text_1.intValue(int) into decimal number and put it to motor_d_buf1(char) 
+  //text_d2.setValue(itoa(text_2.intValue(), motor_d_buf2, 10));//change the text_2.intValue(int) into decimal number and put it to motor_d_buf2(char)
+  text_d1.setValue(strncpy(text_1,motor_d_buf1,BUFLEN));
+  text_d2.setValue(strncpy(text_2,motor_d_buf2,BUFLEN));
 }
 
 int step(int x) {

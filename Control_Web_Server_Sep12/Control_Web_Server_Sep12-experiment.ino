@@ -31,10 +31,10 @@ EmbAJAXMutableSpan sensor_2("sensor_2");
 char sensor_2_buf[BUFLEN];
 
 const char* radio_opts[] = {"fix_value", "fix_value+step", "2step", "3step", "4step","5step", "6step", "7step","8step","9step","user"};
-EmbAJAXRadioGroup<5> radio("radio", radio_opts);
+EmbAJAXRadioGroup<11> radio("radio", radio_opts);
 EmbAJAXMutableSpan radio_d("radio_d");
 
-EmbAJAXOptionSelect<5> optionselect("optionselect", radio_opts);
+EmbAJAXOptionSelect<11> optionselect("optionselect", radio_opts);
 EmbAJAXMutableSpan optionselect_d("optionselect_d");
 
 EmbAJAXSlider slider1("slider1", -range0, range0, 0); // change it into value input
