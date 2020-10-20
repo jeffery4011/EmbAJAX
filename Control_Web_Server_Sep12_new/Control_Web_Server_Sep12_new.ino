@@ -136,8 +136,8 @@ void updateUI() {
   text_d2.setEnabled(radio.selectedOption() == 4);
   //text_d1.setValue(itoa(text_1.intValue(), motor_d_buf1, 10));//change the text_1.intValue(int) into decimal number and put it to motor_d_buf1(char) 
   //text_d2.setValue(itoa(text_2.intValue(), motor_d_buf2, 10));//change the text_2.intValue(int) into decimal number and put it to motor_d_buf2(char)
-  text_d1.setValue(strncpy(text_1,motor_d_buf1,BUFLEN));
-  text_d2.setValue(strncpy(text_2,motor_d_buf2,BUFLEN));
+  text_d1.setValue(strncpy(text_1,motor_d_buf1.value(),BUFLEN));
+  text_d2.setValue(strncpy(text_2,motor_d_buf2.value(),BUFLEN));
 }
 
 int step(int x) {
@@ -163,6 +163,8 @@ void loop() {
   delay(2);
   sensor_1.setValue(itoa(sensorValue1, sensor_1_buf, 10));
   sensor_2.setValue(itoa(sensorValue2, sensor_2_buf, 10));
+  n1 = atoi(motor_1.value(), BUFLEN)
+  n2 = atoi(motor_2.value(), BUFLEN)
   
   if (radio.selectedOption() == 0) { //stop
     digitalWrite(A_out1,0);
@@ -186,14 +188,14 @@ void loop() {
     digitalWrite(B_out2,0);
   } else { //user define mode
   // the class EmbAJAXTextInput do not have intValue function, therefore tex1_1.intValue() and text_2.intValue() will return error
-    if (text_1.intValue()>0) {
+    if (n1>0) {
     digitalWrite(A_out1, 0);
     analogWrite(A_out2,abs(text_1.intValue()));
     } else {
     analogWrite(A_out1, abs(text_1.intValue()));
     digitalWrite(A_out2,0);
     }
-    if (text_2.intValue()>0) {
+    if (n2.intValue()>0) {
     digitalWrite(B_out1, 0);
     analogWrite(B_out2,abs(text_2.intValue()));
     } else {
